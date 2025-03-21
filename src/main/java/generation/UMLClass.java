@@ -4,6 +4,9 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UMLClass {
     private final JavaClass javaClass;
 
@@ -47,34 +50,35 @@ public class UMLClass {
                 "}\n";
     }
 
-    public String drawInheritanceRelationships() {
+    public List<UMLRelationship> drawInheritanceRelationships() {
+        List<UMLRelationship> UMLRelationships = new ArrayList<>();
         JavaClass superClass = javaClass.getSuperJavaClass();
         if (superClass != null && !isObjectClass(superClass) && !isPrimitiveOrJavaUtilsClass(superClass)) {
-            return javaClass.getName() + " --|> " + javaClass.getSuperJavaClass().getName() + "\n";
+            UMLRelationships.add(new UMLRelationship(javaClass.getName(), superClass.getName(), UMLRelationship.RelationshipType.INHERITANCE));
         }
-        return "";
+        return UMLRelationships;
     }
 
-    public String drawImplementationRelationship() {
-        StringBuilder relationships = new StringBuilder();
+    public List<UMLRelationship> drawImplementationRelationship() {
+        List<UMLRelationship> UMLRelationships = new ArrayList<>();
         for (JavaClass interf : javaClass.getInterfaces()) {
-            relationships.append(javaClass.getName()).append(" ..|> ").append(interf.getName()).append("\n");
+            UMLRelationships.add(new UMLRelationship(javaClass.getName(), interf.getName(), UMLRelationship.RelationshipType.IMPLEMENTATION));
         }
-        return relationships.toString();
+        return UMLRelationships;
     }
 
-    public String drawCompositionRelationships(JavaProjectBuilder builder) {
-        StringBuilder references = new StringBuilder();
+    public List<UMLRelationship> drawCompositionRelationships(JavaProjectBuilder builder) {
+        List<UMLRelationship> UMLRelationships = new ArrayList<>();
         if (javaClass.isInterface()) {
             for (var method : javaClass.getMethods()) {
                 JavaClass methodReturnType = method.getReturns();
                 if (!isPrimitiveOrJavaUtilsClass(methodReturnType)) {
-                    references.append(javaClass.getName()).append(" --> ").append(methodReturnType.getName()).append(" : returns\n");
+                    UMLRelationships.add(new UMLRelationship(javaClass.getName(), methodReturnType.getName(), UMLRelationship.RelationshipType.RETURN_TYPE));
                 }
                 for (var parameter : method.getParameters()) {
                     JavaClass parameterType = parameter.getJavaClass();
                     if (!isPrimitiveOrJavaUtilsClass(parameterType)) {
-                        references.append(javaClass.getName()).append(" --> ").append(parameterType.getName()).append(" : takes\n");
+                        UMLRelationships.add(new UMLRelationship(javaClass.getName(), parameterType.getName(), UMLRelationship.RelationshipType.TAKES_ARGUMENT));
                     }
                 }
             }
@@ -83,17 +87,22 @@ public class UMLClass {
             String fieldTypeName = field.getType().getFullyQualifiedName();
             JavaClass fieldType = builder.getClassByName(fieldTypeName);
             if (!isPrimitiveOrJavaUtilsClass(fieldType)) {
-                references.append(javaClass.getName()).append(" --> ").append(fieldType.getName()).append("\n");
+                UMLRelationships.add(new UMLRelationship(javaClass.getName(), fieldType.getName(), UMLRelationship.RelationshipType.COMPOSITION));
             }
         }
-        return references.toString();
+        return UMLRelationships;
     }
 
     public String generateUMLContent(JavaProjectBuilder builder) {
-        return generateUMLDescription() +
-                drawInheritanceRelationships() +
-                drawImplementationRelationship() +
-                drawCompositionRelationships(builder);
+        StringBuilder umlContent = new StringBuilder(generateUMLDescription());
+        List<UMLRelationship> UMLRelationships = new ArrayList<>();
+        UMLRelationships.addAll(drawInheritanceRelationships());
+        UMLRelationships.addAll(drawImplementationRelationship());
+        UMLRelationships.addAll(drawCompositionRelationships(builder));
+        for (UMLRelationship UMLRelationship : UMLRelationships) {
+            umlContent.append(UMLRelationship).append("\n");
+        }
+        return umlContent.toString();
     }
 
     public boolean isTrivialClass() {
