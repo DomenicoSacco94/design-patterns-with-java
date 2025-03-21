@@ -1,10 +1,10 @@
 package patterns.structurals.Facade;
 
-/*
+/**
     The Facade is a design pattern used to handle a complicated set of class and objects in a simple way.
     It operates by offering a class easy to use, having a small number of methods.
     The facade class methods will handle in the background many objects and their respective methods
- */
+**/
 
 interface Shape {
     void draw();

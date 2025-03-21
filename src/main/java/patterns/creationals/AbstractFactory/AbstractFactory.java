@@ -1,9 +1,9 @@
 package patterns.creationals.AbstractFactory;
 
-/*
+/**
     The abstract factory pattern is used when you want to create a family of related objects
     without having to specify the "Mother factory" as a concrete class (here is even an interface)
- */
+**/
 
 interface Shape {
     void calculateArea();

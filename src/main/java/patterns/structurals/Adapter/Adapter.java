@@ -1,14 +1,13 @@
 package patterns.structurals.Adapter;
 
-/*
-    The adapters are used to allow a class to communicate with another we cannot modify, key is:
-    - adapter classes extend the class we want to adapt TO
-    - have in the constructor and in the state a reference to the class we want to adapt FROM
- */
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ The adapters are used to allow a class to communicate with another we cannot modify, key is:
+ - adapter classes extend the class we want to adapt TO
+ - have in the constructor and in the state a reference to the class we want to adapt FROM
+ **/
 abstract class Shape {
     int area;
     abstract void calculateArea();

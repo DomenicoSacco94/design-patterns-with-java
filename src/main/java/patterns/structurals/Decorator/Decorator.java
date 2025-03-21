@@ -1,12 +1,11 @@
 package patterns.structurals.Decorator;
 
-/*
+/**
     The decorator pattern is used to add an arbitrary number of properties/changes to a class without having to
     create too many inheritance relationships.
     The important thing to remember is that the decorator itself extends the class it wants to decorate and, at the same time,
     It keeps a reference of it, which can be altered by each decorator.
- */
-
+**/
 abstract class Shape {
     String properties;
 

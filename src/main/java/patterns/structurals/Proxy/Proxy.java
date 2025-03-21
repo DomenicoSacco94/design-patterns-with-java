@@ -1,10 +1,9 @@
 package patterns.structurals.Proxy;
 
-/*
+/**
     This design pattern is applied when an object needs to be manipulated indirectly (because for instance it contains a method taking
     a lot of time that can be executed on another thread).
- */
-
+**/
 interface Shape {
     void draw();
 }

@@ -1,9 +1,9 @@
 package patterns.creationals.Factory;
 
-/*
+/**
     This design patterns works well when you want to use a mother factory class and return a child factory
     depending on what it is passed on its constructor
- */
+**/
 
 abstract class Shape {
     public abstract void calculateArea();

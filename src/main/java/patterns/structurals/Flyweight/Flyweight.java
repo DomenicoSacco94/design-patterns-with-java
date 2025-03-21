@@ -1,9 +1,6 @@
 package patterns.structurals.Flyweight;
 
-/*
-    The Flyweight pattern is used to optimize the instantiation of several objects sharing the same intrinsic state.
-    A sort of "caching" is implemented, lazily instantiating objects with specific properties.
- */
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +9,10 @@ enum Size {
     SMALL, MEDIUM, BIG
 }
 
+/**
+    The Flyweight pattern is used to optimize the instantiation of several objects sharing the same intrinsic state.
+    A sort of "caching" is implemented, lazily instantiating objects with specific properties.
+**/
 abstract class Shape {
     Size size;
 

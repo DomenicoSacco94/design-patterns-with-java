@@ -1,12 +1,12 @@
 package patterns.structurals.Composite;
 
-/*
- * This pattern is generally used when both the part of an object and the object itself share the same behaviour
- * (e.g. calculate the total cost of a menu and the single menu item)
- */
-
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ This pattern is generally used when both the part of an object and the object itself share the same behaviour
+ (e.g. calculate the total cost of a menu and the single menu item)
+ **/
 
 abstract class Shape {
 
