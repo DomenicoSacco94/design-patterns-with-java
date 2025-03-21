@@ -1,7 +1,6 @@
 package generation;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import net.sourceforge.plantuml.SourceStringReader;
 
@@ -31,17 +30,10 @@ public class UMLGenerator {
                         .append("end note\n");
             }
 
-            // Generate UML content
-            for (JavaClass javaClass : source.getClasses()) {
-
-                UMLClass umlClass = new UMLClass(javaClass);
-
-                if (umlClass.isTrivialClass()) {
-                    continue;
-                }
-
-                umlContent.append(umlClass.getUMLContent(builder));
-            }
+            source.getClasses().stream()
+                    .map(UMLClass::new)
+                    .filter(umlClass -> !umlClass.isTrivialClass())
+                    .forEach(umlClass -> umlContent.append(umlClass.generateUMLContent(builder)));
 
             umlContent.append("@enduml");
 

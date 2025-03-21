@@ -39,7 +39,7 @@ public class UMLClass {
         return methods.toString();
     }
 
-    public String getUMLDescription() {
+    public String generateUMLDescription() {
         return getClassDefinition() +
                 " {\n" +
                 getFields() +
@@ -74,13 +74,11 @@ public class UMLClass {
         return references.toString();
     }
 
-    public String getUMLContent(JavaProjectBuilder builder) {
-        StringBuilder umlContent = new StringBuilder();
-        umlContent.append(getUMLDescription());
-        umlContent.append(drawInheritanceRelationships());
-        umlContent.append(drawImplementationRelationship());
-        umlContent.append(drawCompositionRelationships(builder));
-        return umlContent.toString();
+    public String generateUMLContent(JavaProjectBuilder builder) {
+        return generateUMLDescription() +
+                drawInheritanceRelationships() +
+                drawImplementationRelationship() +
+                drawCompositionRelationships(builder);
     }
 
     public boolean isTrivialClass() {

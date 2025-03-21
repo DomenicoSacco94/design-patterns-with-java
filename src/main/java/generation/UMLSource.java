@@ -13,9 +13,8 @@ public class UMLSource {
     public String collectJavadocComments() {
         StringBuilder javadocContent = new StringBuilder();
 
-        for (JavaClass javaClass : source.getClasses()) {
-            javadocContent.append(getJavadocComment(javaClass.getComment()));
-        }
+        source.getClasses()
+                .forEach(javaClass-> javadocContent.append(getJavadocComment(javaClass.getComment())));
 
         return javadocContent.toString();
     }
