@@ -18,10 +18,11 @@ public class UMLGenerator {
         Collection<JavaSource> sources = builder.getSources();
 
         for (JavaSource source : sources) {
+            UMLSource umlSource = new UMLSource(source);
             StringBuilder umlContent = new StringBuilder("@startuml\n");
 
             // Collect all Javadoc comments
-            String javadocContent = collectJavadocComments(source);
+            String javadocContent = umlSource.collectJavadocComments();
 
             // Append Javadoc comments at the beginning of the UML content
             if (!javadocContent.isEmpty()) {
@@ -33,16 +34,13 @@ public class UMLGenerator {
             // Generate UML content
             for (JavaClass javaClass : source.getClasses()) {
 
-                UMLJavaClass umlJavaClass = new UMLJavaClass(javaClass);
+                UMLClass umlClass = new UMLClass(javaClass);
 
-                if (umlJavaClass.isTrivialClass()) {
+                if (umlClass.isTrivialClass()) {
                     continue;
                 }
 
-                umlContent.append(umlJavaClass.getUMLDescription());
-                umlContent.append(umlJavaClass.drawInheritanceRelationships());
-                umlContent.append(umlJavaClass.drawImplementationRelationship());
-                umlContent.append(umlJavaClass.drawCompositionRelationships(builder));
+                umlContent.append(umlClass.getUMLContent(builder));
             }
 
             umlContent.append("@enduml");
@@ -56,30 +54,6 @@ public class UMLGenerator {
             SourceStringReader reader = new SourceStringReader(umlContent.toString());
             reader.generateImage(new File(outputDir, fileName + ".png"));
         }
-    }
-
-    private String collectJavadocComments(JavaSource source) {
-        StringBuilder javadocContent = new StringBuilder();
-
-        for (JavaClass javaClass : source.getClasses()) {
-            javadocContent.append(getJavadocComment(javaClass.getComment()));
-
-            for (var field : javaClass.getFields()) {
-                javadocContent.append(getJavadocComment(field.getComment()));
-            }
-            for (var method : javaClass.getMethods()) {
-                javadocContent.append(getJavadocComment(method.getComment()));
-            }
-        }
-
-        return javadocContent.toString();
-    }
-
-    private String getJavadocComment(String comment) {
-        if (comment != null && !comment.isEmpty()) {
-            return comment.replace("\n", "\n") + "\n";
-        }
-        return "";
     }
 
     public static void main(String[] args) {

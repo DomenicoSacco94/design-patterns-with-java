@@ -4,10 +4,10 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 
-public class UMLJavaClass {
+public class UMLClass {
     private final JavaClass javaClass;
 
-    public UMLJavaClass(JavaClass javaClass) {
+    public UMLClass(JavaClass javaClass) {
         this.javaClass = javaClass;
     }
 
@@ -74,6 +74,15 @@ public class UMLJavaClass {
         return references.toString();
     }
 
+    public String getUMLContent(JavaProjectBuilder builder) {
+        StringBuilder umlContent = new StringBuilder();
+        umlContent.append(getUMLDescription());
+        umlContent.append(drawInheritanceRelationships());
+        umlContent.append(drawImplementationRelationship());
+        umlContent.append(drawCompositionRelationships(builder));
+        return umlContent.toString();
+    }
+
     public boolean isTrivialClass() {
         return containsMainMethod(javaClass) || isObjectClass(javaClass);
     }
@@ -94,5 +103,4 @@ public class UMLJavaClass {
         }
         return false;
     }
-
 }
