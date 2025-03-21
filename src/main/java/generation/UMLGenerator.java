@@ -12,6 +12,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
+
+// TODO ADD JAVADOC TO THE FINAL UML DIAGRAM
+// TODO REFACTOR
+
 public class UMLGenerator {
 
     public void generateUML(String sourceDirPath, String outputDirPath) throws IOException {
@@ -30,6 +34,7 @@ public class UMLGenerator {
                 }
 
                 appendClassDefinition(umlContent, javaClass);
+                umlContent.append(" {\n");
                 appendFields(umlContent, javaClass);
                 appendMethods(umlContent, javaClass);
                 umlContent.append("}\n");
@@ -65,9 +70,9 @@ public class UMLGenerator {
 
     private void appendClassDefinition(StringBuilder umlContent, JavaClass javaClass) {
         if (javaClass.isInterface()) {
-            umlContent.append("interface ").append(javaClass.getName()).append(" {\n");
+            umlContent.append("interface ").append(javaClass.getName());
         } else {
-            umlContent.append("class ").append(javaClass.getName()).append(" {\n");
+            umlContent.append("class ").append(javaClass.getName());
         }
     }
 
@@ -89,7 +94,7 @@ public class UMLGenerator {
         for (JavaField field : javaClass.getFields()) {
             String fieldTypeName = field.getType().getFullyQualifiedName();
             JavaClass fieldType = builder.getClassByName(fieldTypeName);
-            if (!isPrimitiveOrWrapper(fieldType) && !fieldType.getName().equals(javaClass.getName())) {
+            if (!isPrimitiveOrJavaUtilsClass(fieldType) && !fieldType.getName().equals(javaClass.getName())) {
                 umlContent.append(javaClass.getName()).append(" --> ").append(fieldType.getName()).append("\n");
             }
         }
@@ -116,7 +121,7 @@ public class UMLGenerator {
         return javaClass.getName().equals("Object");
     }
 
-    private boolean isPrimitiveOrWrapper(JavaClass javaClass) {
+    private boolean isPrimitiveOrJavaUtilsClass(JavaClass javaClass) {
         return javaClass.isPrimitive() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
     }
 
