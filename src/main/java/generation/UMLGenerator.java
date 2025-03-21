@@ -2,6 +2,7 @@ package generation;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.JavaMethod;
 import net.sourceforge.plantuml.SourceStringReader;
@@ -28,23 +29,20 @@ public class UMLGenerator {
                     continue;
                 }
 
-                if (javaClass.isInterface()) {
-                    umlContent.append("interface ").append(javaClass.getName()).append(" {\n");
-                } else {
-                    umlContent.append("class ").append(javaClass.getName()).append(" {\n");
-                }
-
+                appendClassDefinition(umlContent, javaClass);
                 appendFields(umlContent, javaClass);
                 appendMethods(umlContent, javaClass);
                 umlContent.append("}\n");
 
                 if (javaClass.getSuperJavaClass() != null && !isObjectClass(javaClass.getSuperJavaClass())) {
-                    umlContent.append(javaClass.getName()).append(" --|> ")
-                            .append(javaClass.getSuperJavaClass().getName()).append("\n");
+                    addInheritance(umlContent, javaClass.getName(), javaClass.getSuperJavaClass().getName());
                 }
 
-                javaClass.getInterfaces().forEach(interf ->
-                        umlContent.append(javaClass.getName()).append(" ..|> ").append(interf.getName()).append("\n"));
+                for (JavaClass interf : javaClass.getInterfaces()) {
+                    addImplementation(umlContent, javaClass.getName(), interf.getName());
+                }
+
+                appendFieldReferences(umlContent, javaClass, builder);
             }
 
             umlContent.append("@enduml");
@@ -65,16 +63,44 @@ public class UMLGenerator {
         }
     }
 
+    private void appendClassDefinition(StringBuilder umlContent, JavaClass javaClass) {
+        if (javaClass.isInterface()) {
+            umlContent.append("interface ").append(javaClass.getName()).append(" {\n");
+        } else {
+            umlContent.append("class ").append(javaClass.getName()).append(" {\n");
+        }
+    }
+
     private void appendFields(StringBuilder umlContent, JavaClass javaClass) {
-        javaClass.getFields().forEach(field ->
-                umlContent.append("  ").append(field.getType().getFullyQualifiedName()).append(" ")
-                        .append(field.getName()).append("\n"));
+        for (JavaField field : javaClass.getFields()) {
+            umlContent.append("  ").append(field.getType().getFullyQualifiedName()).append(" ")
+                    .append(field.getName()).append("\n");
+        }
     }
 
     private void appendMethods(StringBuilder umlContent, JavaClass javaClass) {
-        javaClass.getMethods().forEach(method ->
-                umlContent.append("  ").append(method.getReturnType().getFullyQualifiedName()).append(" ")
-                        .append(method.getName()).append("()\n"));
+        for (JavaMethod method : javaClass.getMethods()) {
+            umlContent.append("  ").append(method.getReturnType().getFullyQualifiedName()).append(" ")
+                    .append(method.getName()).append("()\n");
+        }
+    }
+
+    private void appendFieldReferences(StringBuilder umlContent, JavaClass javaClass, JavaProjectBuilder builder) {
+        for (JavaField field : javaClass.getFields()) {
+            String fieldTypeName = field.getType().getFullyQualifiedName();
+            JavaClass fieldType = builder.getClassByName(fieldTypeName);
+            if (!isPrimitiveOrWrapper(fieldType) && !fieldType.getName().equals(javaClass.getName())) {
+                umlContent.append(javaClass.getName()).append(" --> ").append(fieldType.getName()).append("\n");
+            }
+        }
+    }
+
+    private void addInheritance(StringBuilder umlContent, String className, String superClassName) {
+        umlContent.append(className).append(" --|> ").append(superClassName).append("\n");
+    }
+
+    private void addImplementation(StringBuilder umlContent, String className, String interfaceName) {
+        umlContent.append(className).append(" ..|> ").append(interfaceName).append("\n");
     }
 
     private boolean containsMainMethod(JavaClass javaClass) {
@@ -88,6 +114,10 @@ public class UMLGenerator {
 
     private boolean isObjectClass(JavaClass javaClass) {
         return javaClass.getName().equals("Object");
+    }
+
+    private boolean isPrimitiveOrWrapper(JavaClass javaClass) {
+        return javaClass.isPrimitive() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
     }
 
     public static void main(String[] args) {
