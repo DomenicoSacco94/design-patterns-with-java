@@ -32,5 +32,5 @@ tasks.register('generateUML', Exec) {
     group = 'documentation'
     description = 'Generates UML diagrams for Java files'
     dependsOn classes
-    commandLine 'java', '--add-exports', 'java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED', '-cp', "${sourceSets.main.output.classesDirs.asPath}:${sourceSets.main.runtimeClasspath.asPath}", 'generation.QDoxUMLGenerator'
+    commandLine 'java', '--add-exports', 'java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED', '-cp', "${sourceSets.main.output.classesDirs.asPath}:${sourceSets.main.runtimeClasspath.asPath}", 'generation.UMLGenerator'
 }

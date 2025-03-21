@@ -10,12 +10,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
-//TODO USE VERSION CONTROL
-//TODO REMOVE OBJECTS
+//TODO REMOVE OBJECT FROM GENERATED DIAGRAMS
 //TODO REMOVE CLAS WITH THE MAIN METHOD
 //TODO DO NOT USE FULL PATH
 
-public class QDoxUMLGenerator {
+public class UMLGenerator {
 
     public void generateUML(String sourceDirPath, String outputDirPath) throws IOException {
         JavaProjectBuilder builder = new JavaProjectBuilder();
@@ -67,7 +66,7 @@ public class QDoxUMLGenerator {
     }
 
     public static void main(String[] args) {
-        QDoxUMLGenerator generator = new QDoxUMLGenerator();
+        UMLGenerator generator = new UMLGenerator();
         try {
             generator.generateUML("src/main/java/patterns", "build/uml");
         } catch (IOException e) {
