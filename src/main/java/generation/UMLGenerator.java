@@ -23,24 +23,13 @@ public class UMLGenerator {
         for (JavaSource source : sources) {
             StringBuilder umlContent = new StringBuilder("@startuml\n");
 
-            StringBuilder javadocContent = new StringBuilder();
-
             // Collect all Javadoc comments
-            for (JavaClass javaClass : source.getClasses()) {
-                javadocContent.append(getJavadocComment(javaClass.getComment()));
-
-                for (JavaField field : javaClass.getFields()) {
-                    javadocContent.append(getJavadocComment(field.getComment()));
-                }
-                for (JavaMethod method : javaClass.getMethods()) {
-                    javadocContent.append(getJavadocComment(method.getComment()));
-                }
-            }
+            String javadocContent = collectJavadocComments(source);
 
             // Append Javadoc comments at the beginning of the UML content
             if (!javadocContent.isEmpty()) {
-                umlContent.append("note top of diagram\n")
-                          .append(javadocContent.toString())
+                umlContent.append(String.format("note top of %s\n", source.getClasses().getFirst().getName()))
+                          .append(javadocContent)
                           .append("end note\n");
             }
 
@@ -83,6 +72,23 @@ public class UMLGenerator {
             SourceStringReader reader = new SourceStringReader(umlContent.toString());
             reader.generateImage(new File(outputDir, fileName + ".png"));
         }
+    }
+
+    private String collectJavadocComments(JavaSource source) {
+        StringBuilder javadocContent = new StringBuilder();
+
+        for (JavaClass javaClass : source.getClasses()) {
+            javadocContent.append(getJavadocComment(javaClass.getComment()));
+
+            for (JavaField field : javaClass.getFields()) {
+                javadocContent.append(getJavadocComment(field.getComment()));
+            }
+            for (JavaMethod method : javaClass.getMethods()) {
+                javadocContent.append(getJavadocComment(method.getComment()));
+            }
+        }
+
+        return javadocContent.toString();
     }
 
     private String getJavadocComment(String comment) {
