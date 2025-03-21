@@ -1,6 +1,8 @@
 package generation;
 
 import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaField;
+import com.thoughtworks.qdox.JavaProjectBuilder;
 
 public class UMLJavaClass {
     private final JavaClass javaClass;
@@ -43,5 +45,40 @@ public class UMLJavaClass {
                 getFields() +
                 getMethods() +
                 "}\n";
+    }
+
+    public String drawInheritanceRelationships(JavaProjectBuilder builder) {
+        if (javaClass.getSuperJavaClass() != null && !isObjectClass(javaClass.getSuperJavaClass())) {
+            return javaClass.getName() + " --|> " + javaClass.getSuperJavaClass().getName() + "\n";
+        }
+        return "";
+    }
+
+    public String drawImplementationRelationship() {
+        StringBuilder relationships = new StringBuilder();
+        for (JavaClass interf : javaClass.getInterfaces()) {
+            relationships.append(javaClass.getName()).append(" ..|> ").append(interf.getName()).append("\n");
+        }
+        return relationships.toString();
+    }
+
+    public String drawCompositionRelationships(JavaProjectBuilder builder) {
+        StringBuilder references = new StringBuilder();
+        for (JavaField field : javaClass.getFields()) {
+            String fieldTypeName = field.getType().getFullyQualifiedName();
+            JavaClass fieldType = builder.getClassByName(fieldTypeName);
+            if (!isPrimitiveOrJavaUtilsClass(fieldType) && !fieldType.getName().equals(javaClass.getName())) {
+                references.append(javaClass.getName()).append(" --> ").append(fieldType.getName()).append("\n");
+            }
+        }
+        return references.toString();
+    }
+
+    private boolean isObjectClass(JavaClass javaClass) {
+        return javaClass.getName().equals("Object");
+    }
+
+    private boolean isPrimitiveOrJavaUtilsClass(JavaClass javaClass) {
+        return javaClass.isPrimitive() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
     }
 }

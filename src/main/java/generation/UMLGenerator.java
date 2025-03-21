@@ -2,9 +2,7 @@ package generation;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.JavaMethod;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import java.io.File;
@@ -40,16 +38,9 @@ public class UMLGenerator {
 
                 UMLJavaClass umlJavaClass = new UMLJavaClass(javaClass);
                 umlContent.append(umlJavaClass.getUMLDescription());
-
-                if (javaClass.getSuperJavaClass() != null && !isObjectClass(javaClass.getSuperJavaClass())) {
-                    umlContent.append(drawInheritanceRelationships(javaClass.getName(), javaClass.getSuperJavaClass().getName()));
-                }
-
-                for (JavaClass interf : javaClass.getInterfaces()) {
-                    umlContent.append(drawImplementationRelationship(javaClass.getName(), interf.getName()));
-                }
-
-                umlContent.append(drawCompositionRelationships(javaClass, builder));
+                umlContent.append(umlJavaClass.drawInheritanceRelationships(builder));
+                umlContent.append(umlJavaClass.drawImplementationRelationship());
+                umlContent.append(umlJavaClass.drawCompositionRelationships(builder));
             }
 
             umlContent.append("@enduml");
@@ -71,10 +62,10 @@ public class UMLGenerator {
         for (JavaClass javaClass : source.getClasses()) {
             javadocContent.append(getJavadocComment(javaClass.getComment()));
 
-            for (JavaField field : javaClass.getFields()) {
+            for (var field : javaClass.getFields()) {
                 javadocContent.append(getJavadocComment(field.getComment()));
             }
-            for (JavaMethod method : javaClass.getMethods()) {
+            for (var method : javaClass.getMethods()) {
                 javadocContent.append(getJavadocComment(method.getComment()));
             }
         }
@@ -89,28 +80,8 @@ public class UMLGenerator {
         return "";
     }
 
-    private String drawInheritanceRelationships(String className, String superClassName) {
-        return className + " --|> " + superClassName + "\n";
-    }
-
-    private String drawImplementationRelationship(String className, String interfaceName) {
-        return className + " ..|> " + interfaceName + "\n";
-    }
-
-    private String drawCompositionRelationships(JavaClass javaClass, JavaProjectBuilder builder) {
-        StringBuilder references = new StringBuilder();
-        for (JavaField field : javaClass.getFields()) {
-            String fieldTypeName = field.getType().getFullyQualifiedName();
-            JavaClass fieldType = builder.getClassByName(fieldTypeName);
-            if (!isPrimitiveOrJavaUtilsClass(fieldType) && !fieldType.getName().equals(javaClass.getName())) {
-                references.append(javaClass.getName()).append(" --> ").append(fieldType.getName()).append("\n");
-            }
-        }
-        return references.toString();
-    }
-
     private boolean containsMainMethod(JavaClass javaClass) {
-        for (JavaMethod method : javaClass.getMethods()) {
+        for (var method : javaClass.getMethods()) {
             if (method.getName().equals("main") && method.isStatic() && method.getParameters().size() == 1) {
                 return true;
             }
@@ -120,10 +91,6 @@ public class UMLGenerator {
 
     private boolean isObjectClass(JavaClass javaClass) {
         return javaClass.getName().equals("Object");
-    }
-
-    private boolean isPrimitiveOrJavaUtilsClass(JavaClass javaClass) {
-        return javaClass.isPrimitive() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
     }
 
     public static void main(String[] args) {
