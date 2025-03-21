@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    plantUmlVersion = '8059'
+}
+
+dependencies {
+    implementation "net.sourceforge.plantuml:plantuml:${plantUmlVersion}"
+    implementation 'com.thoughtworks.qdox:qdox:2.0-M10'
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+tasks.register('generateUML', Exec) {
+    group = 'documentation'
+    description = 'Generates UML diagrams for Java files'
+    dependsOn classes
+    commandLine 'java', '--add-exports', 'java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED', '-cp', "${sourceSets.main.output.classesDirs.asPath}:${sourceSets.main.runtimeClasspath.asPath}", 'generation.QDoxUMLGenerator'
+}
