@@ -32,13 +32,15 @@ public class UMLGenerator {
 
             // Generate UML content
             for (JavaClass javaClass : source.getClasses()) {
-                if (containsMainMethod(javaClass) || isObjectClass(javaClass)) {
+
+                UMLJavaClass umlJavaClass = new UMLJavaClass(javaClass);
+
+                if (umlJavaClass.isTrivialClass()) {
                     continue;
                 }
 
-                UMLJavaClass umlJavaClass = new UMLJavaClass(javaClass);
                 umlContent.append(umlJavaClass.getUMLDescription());
-                umlContent.append(umlJavaClass.drawInheritanceRelationships(builder));
+                umlContent.append(umlJavaClass.drawInheritanceRelationships());
                 umlContent.append(umlJavaClass.drawImplementationRelationship());
                 umlContent.append(umlJavaClass.drawCompositionRelationships(builder));
             }
@@ -78,19 +80,6 @@ public class UMLGenerator {
             return comment.replace("\n", "\n") + "\n";
         }
         return "";
-    }
-
-    private boolean containsMainMethod(JavaClass javaClass) {
-        for (var method : javaClass.getMethods()) {
-            if (method.getName().equals("main") && method.isStatic() && method.getParameters().size() == 1) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isObjectClass(JavaClass javaClass) {
-        return javaClass.getName().equals("Object");
     }
 
     public static void main(String[] args) {

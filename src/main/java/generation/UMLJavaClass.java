@@ -47,7 +47,7 @@ public class UMLJavaClass {
                 "}\n";
     }
 
-    public String drawInheritanceRelationships(JavaProjectBuilder builder) {
+    public String drawInheritanceRelationships() {
         if (javaClass.getSuperJavaClass() != null && !isObjectClass(javaClass.getSuperJavaClass())) {
             return javaClass.getName() + " --|> " + javaClass.getSuperJavaClass().getName() + "\n";
         }
@@ -74,6 +74,10 @@ public class UMLJavaClass {
         return references.toString();
     }
 
+    public boolean isTrivialClass() {
+        return containsMainMethod(javaClass) || isObjectClass(javaClass);
+    }
+
     private boolean isObjectClass(JavaClass javaClass) {
         return javaClass.getName().equals("Object");
     }
@@ -81,4 +85,14 @@ public class UMLJavaClass {
     private boolean isPrimitiveOrJavaUtilsClass(JavaClass javaClass) {
         return javaClass.isPrimitive() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
     }
+
+    private boolean containsMainMethod(JavaClass javaClass) {
+        for (var method : javaClass.getMethods()) {
+            if (method.getName().equals("main") && method.isStatic() && method.getParameters().size() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
