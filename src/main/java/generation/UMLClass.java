@@ -48,7 +48,8 @@ public class UMLClass {
     }
 
     public String drawInheritanceRelationships() {
-        if (javaClass.getSuperJavaClass() != null && !isObjectClass(javaClass.getSuperJavaClass())) {
+        JavaClass superClass = javaClass.getSuperJavaClass();
+        if (superClass != null && !isObjectClass(superClass) && !isPrimitiveOrJavaUtilsClass(superClass)) {
             return javaClass.getName() + " --|> " + javaClass.getSuperJavaClass().getName() + "\n";
         }
         return "";
@@ -64,10 +65,24 @@ public class UMLClass {
 
     public String drawCompositionRelationships(JavaProjectBuilder builder) {
         StringBuilder references = new StringBuilder();
+        if (javaClass.isInterface()) {
+            for (var method : javaClass.getMethods()) {
+                JavaClass methodReturnType = method.getReturns();
+                if (!isPrimitiveOrJavaUtilsClass(methodReturnType)) {
+                    references.append(javaClass.getName()).append(" --> ").append(methodReturnType.getName()).append(" : returns\n");
+                }
+                for (var parameter : method.getParameters()) {
+                    JavaClass parameterType = parameter.getJavaClass();
+                    if (!isPrimitiveOrJavaUtilsClass(parameterType)) {
+                        references.append(javaClass.getName()).append(" --> ").append(parameterType.getName()).append(" : takes\n");
+                    }
+                }
+            }
+        }
         for (JavaField field : javaClass.getFields()) {
             String fieldTypeName = field.getType().getFullyQualifiedName();
             JavaClass fieldType = builder.getClassByName(fieldTypeName);
-            if (!isPrimitiveOrJavaUtilsClass(fieldType) && !fieldType.getName().equals(javaClass.getName())) {
+            if (!isPrimitiveOrJavaUtilsClass(fieldType)) {
                 references.append(javaClass.getName()).append(" --> ").append(fieldType.getName()).append("\n");
             }
         }
