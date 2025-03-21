@@ -90,7 +90,7 @@ public class UMLClass {
     }
 
     private boolean isPrimitiveOrJavaUtilsClass(JavaClass javaClass) {
-        return javaClass.isPrimitive() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
+        return javaClass.isPrimitive() || javaClass.isEnum() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
     }
 
     private boolean containsMainMethod(JavaClass javaClass) {
