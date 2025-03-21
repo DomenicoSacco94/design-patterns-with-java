@@ -38,21 +38,18 @@ public class UMLGenerator {
                     continue;
                 }
 
-                umlContent.append(getClassDefinition(javaClass));
-                umlContent.append(" {\n");
-                umlContent.append(getFields(javaClass));
-                umlContent.append(getMethods(javaClass));
-                umlContent.append("}\n");
+                UMLJavaClass umlJavaClass = new UMLJavaClass(javaClass);
+                umlContent.append(umlJavaClass.getUMLDescription());
 
                 if (javaClass.getSuperJavaClass() != null && !isObjectClass(javaClass.getSuperJavaClass())) {
-                    umlContent.append(getInheritanceRelationships(javaClass.getName(), javaClass.getSuperJavaClass().getName()));
+                    umlContent.append(drawInheritanceRelationships(javaClass.getName(), javaClass.getSuperJavaClass().getName()));
                 }
 
                 for (JavaClass interf : javaClass.getInterfaces()) {
-                    umlContent.append(getImplementationRelationship(javaClass.getName(), interf.getName()));
+                    umlContent.append(drawImplementationRelationship(javaClass.getName(), interf.getName()));
                 }
 
-                umlContent.append(getFieldReferences(javaClass, builder));
+                umlContent.append(drawCompositionRelationships(javaClass, builder));
             }
 
             umlContent.append("@enduml");
@@ -92,43 +89,15 @@ public class UMLGenerator {
         return "";
     }
 
-    private String getClassDefinition(JavaClass javaClass) {
-        StringBuilder classDef = new StringBuilder();
-        if (javaClass.isInterface()) {
-            classDef.append("interface ").append(javaClass.getName());
-        } else {
-            classDef.append("class ").append(javaClass.getName());
-        }
-        return classDef.toString();
-    }
-
-    private String getFields(JavaClass javaClass) {
-        StringBuilder fields = new StringBuilder();
-        for (JavaField field : javaClass.getFields()) {
-            fields.append("  ").append(field.getType().getFullyQualifiedName()).append(" ")
-                  .append(field.getName()).append("\n");
-        }
-        return fields.toString();
-    }
-
-    private String getMethods(JavaClass javaClass) {
-        StringBuilder methods = new StringBuilder();
-        for (JavaMethod method : javaClass.getMethods()) {
-            methods.append("  ").append(method.getReturnType().getFullyQualifiedName()).append(" ")
-                   .append(method.getName()).append("()\n");
-        }
-        return methods.toString();
-    }
-
-    private String getInheritanceRelationships(String className, String superClassName) {
+    private String drawInheritanceRelationships(String className, String superClassName) {
         return className + " --|> " + superClassName + "\n";
     }
 
-    private String getImplementationRelationship(String className, String interfaceName) {
+    private String drawImplementationRelationship(String className, String interfaceName) {
         return className + " ..|> " + interfaceName + "\n";
     }
 
-    private String getFieldReferences(JavaClass javaClass, JavaProjectBuilder builder) {
+    private String drawCompositionRelationships(JavaClass javaClass, JavaProjectBuilder builder) {
         StringBuilder references = new StringBuilder();
         for (JavaField field : javaClass.getFields()) {
             String fieldTypeName = field.getType().getFullyQualifiedName();
