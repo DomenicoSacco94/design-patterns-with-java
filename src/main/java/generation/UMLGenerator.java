@@ -8,7 +8,6 @@ import com.thoughtworks.qdox.model.JavaMethod;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -29,8 +28,8 @@ public class UMLGenerator {
             // Append Javadoc comments at the beginning of the UML content
             if (!javadocContent.isEmpty()) {
                 umlContent.append(String.format("note top of %s\n", source.getClasses().getFirst().getName()))
-                          .append(javadocContent)
-                          .append("end note\n");
+                        .append(javadocContent)
+                        .append("end note\n");
             }
 
             // Generate UML content
@@ -64,11 +63,6 @@ public class UMLGenerator {
             }
 
             String fileName = new File(source.getURL().getFile()).getName().replace(".java", "");
-            File umlFile = new File(outputDir, fileName + ".puml");
-            try (FileWriter writer = new FileWriter(umlFile)) {
-                writer.write(umlContent.toString());
-            }
-
             SourceStringReader reader = new SourceStringReader(umlContent.toString());
             reader.generateImage(new File(outputDir, fileName + ".png"));
         }
