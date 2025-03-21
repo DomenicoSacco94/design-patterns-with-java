@@ -21,10 +21,30 @@ public class UMLGenerator {
         Collection<JavaSource> sources = builder.getSources();
 
         for (JavaSource source : sources) {
-            StringBuilder umlContent = new StringBuilder("@startuml");
+            StringBuilder umlContent = new StringBuilder("@startuml\n");
 
-            umlContent.append("\n");
+            StringBuilder javadocContent = new StringBuilder();
 
+            // Collect all Javadoc comments
+            for (JavaClass javaClass : source.getClasses()) {
+                javadocContent.append(getJavadocComment(javaClass.getComment()));
+
+                for (JavaField field : javaClass.getFields()) {
+                    javadocContent.append(getJavadocComment(field.getComment()));
+                }
+                for (JavaMethod method : javaClass.getMethods()) {
+                    javadocContent.append(getJavadocComment(method.getComment()));
+                }
+            }
+
+            // Append Javadoc comments at the beginning of the UML content
+            if (!javadocContent.isEmpty()) {
+                umlContent.append("note top of diagram\n")
+                          .append(javadocContent.toString())
+                          .append("end note\n");
+            }
+
+            // Generate UML content
             for (JavaClass javaClass : source.getClasses()) {
                 if (containsMainMethod(javaClass) || isObjectClass(javaClass)) {
                     continue;
@@ -65,12 +85,21 @@ public class UMLGenerator {
         }
     }
 
-    private String getClassDefinition(JavaClass javaClass) {
-        if (javaClass.isInterface()) {
-            return "interface " + javaClass.getName();
-        } else {
-            return "class " + javaClass.getName();
+    private String getJavadocComment(String comment) {
+        if (comment != null && !comment.isEmpty()) {
+            return comment.replace("\n", "\n") + "\n";
         }
+        return "";
+    }
+
+    private String getClassDefinition(JavaClass javaClass) {
+        StringBuilder classDef = new StringBuilder();
+        if (javaClass.isInterface()) {
+            classDef.append("interface ").append(javaClass.getName());
+        } else {
+            classDef.append("class ").append(javaClass.getName());
+        }
+        return classDef.toString();
     }
 
     private String getFields(JavaClass javaClass) {
