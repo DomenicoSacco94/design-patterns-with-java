@@ -19,6 +19,7 @@ This Repo contains a refresher on the most popular design patterns, implemented 
 - [Behavioral Patterns](#behavioral-patterns)
   - [Command](#command)
   - [Chain of Responsibility](#chain-of-responsibility)
+  - [Interpreter](#interpreter)
 
 ## Creational Patterns
 ### Abstract Factory
@@ -65,3 +66,6 @@ This Repo contains a refresher on the most popular design patterns, implemented 
 
 ### Chain of Responsibility
 ![Chain of Responsibility](./pictures/behaviourals/ChainOfResponsibility.png)
+
+### Interpreter
+![Interpreter](./pictures/behaviourals/Interpreter.png)
