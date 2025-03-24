@@ -1,6 +1,9 @@
 package patterns.behaviorals;
 
-
+/**
+ This pattern is used for decoupling the client (command requester) with the server (command executor).
+ The decoupling is performed creating a Command object which gets exchanges between the two.
+**/
 interface ShapeCommand {
     void execute();
 }

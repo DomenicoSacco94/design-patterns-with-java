@@ -16,6 +16,7 @@ This Repo contains a refresher on the most popular design patterns, implemented 
   - [Bridge](#bridge)
   - [Flyweight](#flyweight)
   - [Decorator](#decorator)
+- [Behavioral Patterns](#behavioral-patterns)  
 
 ## Creational Patterns
 ### Abstract Factory
@@ -54,3 +55,11 @@ This Repo contains a refresher on the most popular design patterns, implemented 
 
 ### Decorator
 ![Decorator](./pictures/structurals/Decorator.png)
+
+## Behavioral Patterns
+
+### Command
+![Command](./pictures/behaviourals/Command.png)
+
+### Chain of Responsibility
+![Chain of Responsibility](./pictures/behaviourals/ChainOfResponsibility.png)
