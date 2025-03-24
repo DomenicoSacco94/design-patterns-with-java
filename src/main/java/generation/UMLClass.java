@@ -87,7 +87,7 @@ public class UMLClass {
             String fieldTypeName = field.getType().getFullyQualifiedName();
             JavaClass fieldType = builder.getClassByName(fieldTypeName);
             if (!isPrimitiveOrJavaUtilsClass(fieldType)) {
-                String cleanedFieldTypeName = cleanClassName(fieldType.getName());
+                String cleanedFieldTypeName = cleanClassName(field.getType().getGenericCanonicalName());
                 UMLRelationships.add(new UMLRelationship(javaClass.getName(), cleanedFieldTypeName, UMLRelationship.RelationshipType.COMPOSITION));
             }
         }
@@ -115,7 +115,7 @@ public class UMLClass {
     }
 
     private boolean isPrimitiveOrJavaUtilsClass(JavaClass javaClass) {
-        return javaClass.isPrimitive() || javaClass.isEnum() || javaClass.getFullyQualifiedName().startsWith("java.lang.") || javaClass.getFullyQualifiedName().startsWith("java.util.");
+        return javaClass.isPrimitive() || javaClass.isEnum() || javaClass.getFullyQualifiedName().startsWith("java.lang.");
     }
 
     private boolean containsMainMethod(JavaClass javaClass) {
@@ -130,6 +130,14 @@ public class UMLClass {
     private String cleanClassName(String className) {
         // Remove array brackets if present
         className = className.replace("[]", "");
+        // Capture and clean generic type information if present
+        if (className.contains("<")) {
+            int startIndex = className.indexOf("<");
+            int endIndex = className.lastIndexOf(">");
+            String genericPart = className.substring(startIndex + 1, endIndex);
+            genericPart = cleanClassName(genericPart); // Recursively clean the generic part
+            className = genericPart; // Use the cleaned generic part as the class name
+        }
         // Split by dot and take the last part
         String[] parts = className.split("\\.");
         return parts[parts.length - 1];
