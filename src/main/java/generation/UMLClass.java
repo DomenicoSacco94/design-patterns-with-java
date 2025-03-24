@@ -73,12 +73,14 @@ public class UMLClass {
             for (var method : javaClass.getMethods()) {
                 JavaClass methodReturnType = method.getReturns();
                 if (!isPrimitiveOrJavaUtilsClass(methodReturnType)) {
-                    UMLRelationships.add(new UMLRelationship(javaClass.getName(), methodReturnType.getName(), UMLRelationship.RelationshipType.RETURN_TYPE));
+                    String cleanedName = cleanClassName(methodReturnType.getGenericCanonicalName());
+                    UMLRelationships.add(new UMLRelationship(javaClass.getName(), cleanedName, UMLRelationship.RelationshipType.RETURN_TYPE));
                 }
                 for (var parameter : method.getParameters()) {
                     JavaClass parameterType = parameter.getJavaClass();
                     if (!isPrimitiveOrJavaUtilsClass(parameterType)) {
-                        UMLRelationships.add(new UMLRelationship(javaClass.getName(), parameterType.getName(), UMLRelationship.RelationshipType.TAKES_ARGUMENT));
+                        String cleanedName = cleanClassName(parameterType.getGenericCanonicalName());
+                        UMLRelationships.add(new UMLRelationship(javaClass.getName(), cleanedName, UMLRelationship.RelationshipType.TAKES_ARGUMENT));
                     }
                 }
             }
