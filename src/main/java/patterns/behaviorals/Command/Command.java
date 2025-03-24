@@ -1,4 +1,4 @@
-package patterns.behaviorals;
+package patterns.behaviorals.Command;
 
 /**
  This pattern is used for decoupling the client (command requester) with the server (command executor).

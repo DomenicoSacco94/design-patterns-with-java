@@ -1,4 +1,4 @@
-package patterns.behaviorals;
+package patterns.behaviorals.Interpreter;
 
 import java.util.Arrays;
 import java.util.List;

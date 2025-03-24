@@ -1,4 +1,4 @@
-package patterns.behaviorals;
+package patterns.behaviorals.ChainOfResponsibility;
 
 import java.util.Arrays;
 
