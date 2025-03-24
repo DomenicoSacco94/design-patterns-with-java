@@ -20,6 +20,7 @@ This Repo contains a refresher on the most popular design patterns, implemented 
   - [Command](#command)
   - [Chain of Responsibility](#chain-of-responsibility)
   - [Interpreter](#interpreter)
+  - [Iteration] (#iteration)
 
 ## Creational Patterns
 ### Abstract Factory
@@ -69,3 +70,6 @@ This Repo contains a refresher on the most popular design patterns, implemented 
 
 ### Interpreter
 ![Interpreter](./pictures/behaviourals/Interpreter.png)
+
+### Iteration
+![Iteration](./pictures/behaviourals/Iteration.png)

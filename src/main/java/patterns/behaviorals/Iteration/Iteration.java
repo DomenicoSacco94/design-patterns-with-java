@@ -1,14 +1,15 @@
-package patterns.behaviorals.Iterator;
+package patterns.behaviorals.Iteration;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- An iterator is implemented in most of the programming languages, it helps to decouple the internal representation of an object from the function
- listing its content. In this example Square and Circle have different collection classes but implement the Java Iterable interface
+ An iterator is implemented in most of the programming languages, it helps to decouple
+ the internal representation of an object from the function listing its content.
 **/
 interface Shape {
     void display();
@@ -41,7 +42,7 @@ class SquareList implements Iterable<Square> {
     }
 
     @Override
-    public @NotNull java.util.Iterator<Square> iterator() {
+    public @NotNull Iterator<Square> iterator() {
         return squares.listIterator();
     }
 }
@@ -75,14 +76,14 @@ class CircleList implements Iterable<Circle> {
     }
 
     @Override
-    public @NotNull java.util.Iterator<Circle> iterator() {
+    public @NotNull Iterator<Circle> iterator() {
         return Arrays.stream(circles).iterator();
     }
 }
 
-public class Iterator {
+public class Iteration {
 
-    public static void printElements(java.util.Iterator<? extends Shape> iterator) {
+    public static void printElements(Iterator<? extends Shape> iterator) {
         while(iterator.hasNext()) {
             Shape s = iterator.next();
             s.display();

@@ -11,34 +11,15 @@ public class UMLRelationship {
         this.type = type;
     }
 
-    public String getFrom() {
-        return from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public RelationshipType getType() {
-        return type;
-    }
-
     @Override
     public String toString() {
-        switch (type) {
-            case INHERITANCE:
-                return from + " --|> " + to;
-            case IMPLEMENTATION:
-                return from + " ..|> " + to;
-            case COMPOSITION:
-                return from + " --> " + to;
-            case TAKES_ARGUMENT:
-                return from + " --> " + to + " : takes";
-            case RETURN_TYPE:
-                return from + " --> " + to + " : returns";
-            default:
-                throw new IllegalArgumentException("Unknown relationship type: " + type);
-        }
+        return switch (type) {
+            case INHERITANCE -> from + " --|> " + to;
+            case IMPLEMENTATION -> from + " ..|> " + to;
+            case COMPOSITION -> from + " --> " + to;
+            case TAKES_ARGUMENT -> from + " --> " + to + " : takes";
+            case RETURN_TYPE -> from + " --> " + to + " : returns";
+        };
     }
 
     public enum RelationshipType {

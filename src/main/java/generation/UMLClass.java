@@ -87,7 +87,8 @@ public class UMLClass {
             String fieldTypeName = field.getType().getFullyQualifiedName();
             JavaClass fieldType = builder.getClassByName(fieldTypeName);
             if (!isPrimitiveOrJavaUtilsClass(fieldType)) {
-                UMLRelationships.add(new UMLRelationship(javaClass.getName(), fieldType.getName(), UMLRelationship.RelationshipType.COMPOSITION));
+                String cleanedFieldTypeName = cleanClassName(fieldType.getName());
+                UMLRelationships.add(new UMLRelationship(javaClass.getName(), cleanedFieldTypeName, UMLRelationship.RelationshipType.COMPOSITION));
             }
         }
         return UMLRelationships;
@@ -124,5 +125,13 @@ public class UMLClass {
             }
         }
         return false;
+    }
+
+    private String cleanClassName(String className) {
+        // Remove array brackets if present
+        className = className.replace("[]", "");
+        // Split by dot and take the last part
+        String[] parts = className.split("\\.");
+        return parts[parts.length - 1];
     }
 }
