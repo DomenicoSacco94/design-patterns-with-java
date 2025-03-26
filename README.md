@@ -1,6 +1,9 @@
 # design-patterns-with-java
 This Repo contains a refresher on the most popular design patterns, implemented with a simple set of Java classes
 
+The diagrams were drawn by using an automated gradle task that scans every single class in `patterns` and generates the corresponding UML diagram.
+Ain't looking pretty, but it is automated ;-)
+
 ## Table of Contents
 - [Creational Patterns](#creational-patterns)
   - [Abstract Factory](#abstract-factory)
