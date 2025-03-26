@@ -23,6 +23,8 @@ This Repo contains a refresher on the most popular design patterns, implemented 
   - [Iteration](#iteration)
   - [Mediator](#mediator)
   - [Memento](#memento)
+  - [State](#state)
+  - [Observer](#observer)
 
 ## Creational Patterns
 ### Abstract Factory
@@ -81,3 +83,9 @@ This Repo contains a refresher on the most popular design patterns, implemented 
 
 ### Memento
 ![Memento](./pictures/behaviourals/Memento.png)
+
+### State
+![State](pictures/behaviourals/State.png)
+
+### Observer
+![Observer](./pictures/behaviourals/Observer.png)
