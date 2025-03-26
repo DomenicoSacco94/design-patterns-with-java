@@ -28,6 +28,7 @@ Ain't looking pretty, but it is automated ;-)
   - [Memento](#memento)
   - [State](#state)
   - [Observer](#observer)
+  - [Strategy](#strategy)
 
 ## Creational Patterns
 ### Abstract Factory
@@ -92,3 +93,6 @@ Ain't looking pretty, but it is automated ;-)
 
 ### Observer
 ![Observer](./pictures/behaviourals/Observer.png)
+
+### Strategy
+![Strategy](./pictures/behaviourals/Strategy.png)
