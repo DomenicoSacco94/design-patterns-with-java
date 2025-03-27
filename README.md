@@ -29,6 +29,8 @@ Ain't looking pretty, but it is automated ;-)
   - [State](#state)
   - [Observer](#observer)
   - [Strategy](#strategy)
+  - [Template Method](#template-method)
+  - [Visitor](#visitor)
 
 ## Creational Patterns
 ### Abstract Factory
@@ -96,3 +98,9 @@ Ain't looking pretty, but it is automated ;-)
 
 ### Strategy
 ![Strategy](./pictures/behaviourals/Strategy.png)
+
+### Template Method
+![Template Method](./pictures/behaviourals/TemplateMethod.png)
+
+### Visitor
+![Visitor](./pictures/behaviourals/Visitor.png)
