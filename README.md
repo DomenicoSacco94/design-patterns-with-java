@@ -1,6 +1,9 @@
 # design-patterns-with-java
 This Repo contains a refresher on the most popular design patterns, implemented with a simple set of Java classes
 
+I have been reading [this book](https://www.amazon.de/-/en/Java-Design-Pattern-Essentials-Second/dp/0956575846) and used it as inspiration to come up with my own examples.
+My suggestion is to do the same: creating examples in a different domain than those provided by the book, to be sure to catch the gist of each pattern.
+
 The diagrams were drawn by using an automated gradle task that scans every single class in `patterns` and generates the corresponding UML diagram.
 Ain't looking pretty, but it is automated ;-)
 
