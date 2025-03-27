@@ -2,7 +2,7 @@ package patterns.creationals.Singleton;
 
 /**
     The singleton is a design pattern used when we want only one object at a time with a single
-    point of access
+    point of access.
  **/
 
 

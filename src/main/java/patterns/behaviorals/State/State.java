@@ -3,7 +3,7 @@ package patterns.behaviorals.State;
 /**
  The State pattern is used to implement an object which can behave differently
  depending on the state it is in. Each Object state models also the transition to
- the next one
+ the next one.
 **/
 abstract class Shape {
     private int size;

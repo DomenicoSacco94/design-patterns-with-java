@@ -4,7 +4,7 @@ package patterns.structurals.Bridge;
     In theory, the Bridge pattern is described as a method to allow an abstraction and an implementation
     to grow de-coupled and be modified without affecting each other.
     In practice, it means that the implementation includes a reference to the abstraction, using
-    the composition-over-inheritance approach
+    the composition-over-inheritance approach.
  **/
 interface Shape {
     double calculatePerimeter();

@@ -2,7 +2,7 @@ package patterns.creationals.Builder;
 
 /**
     The builder pattern is used when you want to decouple the initialization of an object from its representation.
-    It has a Director class specifying how to build the object and the builder itself which does it
+    It has a Director class specifying how to build the object and the builder itself which does it.
 **/
 
 interface Shape {

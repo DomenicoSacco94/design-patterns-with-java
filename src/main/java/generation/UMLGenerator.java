@@ -10,6 +10,8 @@ import java.util.Collection;
 
 public class UMLGenerator {
 
+    private static final boolean GENERATE_JAVADOC = false;
+
     public void generateUML(String sourceDirPath, String outputDirPath) throws IOException {
         JavaProjectBuilder builder = new JavaProjectBuilder();
         builder.addSourceTree(new File(sourceDirPath));
@@ -17,17 +19,20 @@ public class UMLGenerator {
         Collection<JavaSource> sources = builder.getSources();
 
         for (JavaSource source : sources) {
-            UMLSource umlSource = new UMLSource(source);
+
             StringBuilder umlContent = new StringBuilder("@startuml\n");
 
-            // Collect all Javadoc comments
-            String javadocContent = umlSource.collectJavadocComments();
+            if(GENERATE_JAVADOC) {
+                // Collect all Javadoc comments
+                UMLSource umlSource = new UMLSource(source);
+                String javadocContent = umlSource.collectJavadocComments();
 
-            // Append Javadoc comments at the beginning of the UML content
-            if (!javadocContent.isEmpty()) {
-                umlContent.append(String.format("note top of %s\n", source.getClasses().getFirst().getName()))
-                        .append(javadocContent)
-                        .append("end note\n");
+                // Append Javadoc comments at the beginning of the UML content
+                if (!javadocContent.isEmpty()) {
+                    umlContent.append(String.format("note top of %s\n", source.getClasses().getFirst().getName()))
+                            .append(javadocContent)
+                            .append("end note\n");
+                }
             }
 
             source.getClasses().stream()

@@ -1,8 +1,8 @@
 package patterns.creationals.Prototype;
 
 /**
-    The prototype is a design pattern used when creating an object is really expensive and time consuming
-    so as a shortcut we just clone form an existing object and apply some small tweaks
+    The prototype is a design pattern used when creating an object is really expensive and time-consuming
+    so as a shortcut we just clone form an existing object and apply some small tweaks.
 **/
 
 // we apply clone to the interface so we are forced to customize clone for every shape

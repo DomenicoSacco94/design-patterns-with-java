@@ -2,7 +2,7 @@ package patterns.behaviorals.Visitor;
 
 /**
  This pattern is used to introduce new functionality into a class hierarchy bringing only a few changes
- It consists in adding a Visitor class and a corresponding method to invoke it the visited class
+ It consists in adding a Visitor class and a corresponding method to invoke it the visited class.
  **/
 
 interface Shape extends Visitable {

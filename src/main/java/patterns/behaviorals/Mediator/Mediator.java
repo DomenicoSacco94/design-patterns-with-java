@@ -1,7 +1,4 @@
-package patterns.behaviorals.mediator;
-
-import java.util.ArrayList;
-import java.util.List;
+package patterns.behaviorals.Mediator;
 
 /**
   This pattern is usually used to mediate the interaction between different objects without them having to explicitly refer to each other.
