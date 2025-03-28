@@ -252,5 +252,6 @@ Inbound ports will be IMPLEMENTED by the application, outbound port are those th
   <img src="./pictures/ExagonalArchitecture.png" alt="Visitor">
 </div>
 
+
 **WHY IS THIS ARCHITECTURE LEANER?** We disengaged the business layer from the concrete implementation of the inbound and outbound ports.
 In the future, we can choose to switch the ports and for instance making the outbound port a REST API instead of a DB.
