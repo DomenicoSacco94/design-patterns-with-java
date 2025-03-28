@@ -4,6 +4,8 @@ This Repo contains a refresher on the most popular design patterns, implemented 
 I have been reading [this book](https://www.amazon.de/-/en/Java-Design-Pattern-Essentials-Second/dp/0956575846) and used it as inspiration to come up with my own examples.
 My suggestion is to do the same: creating examples in a different domain than those provided by the book, to be sure to catch the gist of each pattern.
 
+I also found [this blog post](https://8thlight.com/insights/a-color-coded-guide-to-ports-and-adapters) particularly useful to better describe and understand the clean exagonal architecture.
+
 The diagrams were drawn by using an automated gradle task that scans every single class in `patterns` and generates the corresponding UML diagram.
 Ain't looking pretty, but it is automated ;-)
 
@@ -34,6 +36,8 @@ Ain't looking pretty, but it is automated ;-)
   - [Strategy](#strategy)
   - [Template Method](#template-method)
   - [Visitor](#visitor)
+- ## [BONUS: Exagonal architecture](#exagonal-architecture)
+  - [Command](#command)  
 
 # Creational Patterns
 The Creational Patterns are used to control how an object is instantiated.
@@ -234,4 +238,16 @@ It consists in adding a Visitor class and a corresponding method to invoke it th
 
 <div align="center">
   <img src="./pictures/Visitor.png" alt="Visitor">
+</div>
+
+## Exagonal Architecture
+The Exagonal architecture can be seen as an evolution of the layered model (controller -> service -> repository).
+
+It inverts the dependency of the service layer (business) with the repository.
+In order to achieve this outcome, the architecture will use ports (inbound and outbound) and adapters.
+
+Inbound ports will be IMPLEMENTED by the application, outbound port are those the application DEPENDS on.
+
+<div align="center">
+  <img src="./pictures/ExagonalArchitecture.png" alt="Visitor">
 </div>
