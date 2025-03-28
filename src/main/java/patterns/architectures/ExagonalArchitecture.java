@@ -39,6 +39,7 @@ class ShapeServiceImpl implements ShapeService {
 
     private final ShapeDBAdapter shapeDBAdapter;
 
+    // Spring scans the classes implementing ShapeDBAdapter and will autowire ShapeDBRepository
     ShapeServiceImpl(ShapeDBRepository shapeDBAdapter) {
         this.shapeDBAdapter = shapeDBAdapter;
     }
@@ -52,7 +53,7 @@ class ShapeServiceImpl implements ShapeService {
 // Inbound port, this could be a Spring Boot REST controller
 class ShapeController {
 
-    // Spring scans the classes implementing ShapeService and will autowireShapeServiceImpl
+    // Spring scans the classes implementing ShapeService and will autowire ShapeServiceImpl
     private final ShapeService shapeService;
 
     ShapeController(ShapeService shapeService) {
