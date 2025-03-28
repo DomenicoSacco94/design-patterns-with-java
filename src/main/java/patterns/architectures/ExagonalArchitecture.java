@@ -18,12 +18,12 @@ class Square implements Shape {
     }
 }
 
-//Outbound port, This could be for instance a JPA adapter for CRUD operations using Hibernate
+//Outbound port, This could be for instance a JPA adapter for CRUD operations using Hibernate (or another interface extending it)
 interface ShapeDBAdapter {
     void storeShapeInDb(Shape shape);
 }
 
-// In a spring Application, we usually do not implement the repository class directly, but just create another interface
+// In a Spring application, we usually do not implement the repository class directly, but just create another interface
 class ShapeDBRepository implements ShapeDBAdapter {
 
     @Override
