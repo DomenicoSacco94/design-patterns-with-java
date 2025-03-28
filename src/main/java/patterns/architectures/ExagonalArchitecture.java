@@ -23,6 +23,7 @@ interface ShapeDBAdapter {
     void storeShapeInDb(Shape shape);
 }
 
+// In a spring Application, we usually do not implement the repository class directly, but just create another interface
 class ShapeDBRepository implements ShapeDBAdapter {
 
     @Override
