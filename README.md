@@ -37,7 +37,6 @@ Ain't looking pretty, but it is automated ;-)
   - [Template Method](#template-method)
   - [Visitor](#visitor)
 - ## [BONUS: Exagonal architecture](#exagonal-architecture)
-  - [Command](#command)  
 
 # Creational Patterns
 The Creational Patterns are used to control how an object is instantiated.
